@@ -1,0 +1,46 @@
+spring:
+  profiles:
+    include: aws
+  application:
+    name: project1128
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
+  messages:
+    basename: messages,errors
+    locale: ko
+    encoding: UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+
+
+# server port 설정 추가
+server:
+  servlet:
+    session:
+      timeout: 30m    # 세션 타임아웃 설정 (30분)
+      persistent: false  # 세션을 쿠키로 관리 (URL 리라이팅 대신 쿠키 사용)
+      tracking-modes: COOKIE
+  port: 8080
+
+logging:
+  file:
+    name: /home/ubuntu/project1128/logs/application.log
+  level:
+    org.hibernate.SQL: debug
+    org.springframework.transaction: DEBUG
+    org.hibernate.orm.jdbc.bind: trace
+    root: INFO
+
+file:
+  dir: /home/ubuntu/picstore/  # file.dir을 spring 하위가 아니라 file 하위로 지정
+
+## 파일 업로드 경로 설정 (EC2에서는 로컬 경로를 지정해야 함)
+#file.upload-dir=/home/ubuntu/project/pictures/
