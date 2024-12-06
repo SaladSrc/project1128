@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"></head>
+<body>
+<div class="container">
+  <div th:replace="fragments/bodyHeader :: bodyHeader"></div>
+
+  <div class="py-5 text-center">
+    <h2>회원 목록</h2>
+  </div>
+
+  <div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>이름</th> <th>도시</th> <th>거리</th>
+        <th>우편번호</th> </tr>
+      </thead>
+      <tbody>
+      <tr th:each="member : ${members}">
+        <td th:text="${member.id}"></td>
+        <td th:text="${member.name}"></td>
+        <td th:text="${member.address?.city}"></td>
+        <td th:text="${member.address?.street}"></td>
+        <td th:text="${member.address?.zipcode}"></td>
+      </tr>
+      </tbody>
+    </table>
+
+    <!-- 페이지네이션 -->
+    <div class="d-flex justify-content-center">
+      <ul class="pagination">
+        <!-- 이전 페이지 -->
+        <li class="page-members" th:classappend="${currentPage == 0 or totalPages == 0} ? 'disabled' : ''">
+          <a class="page-link" th:href="@{|/members?page=${currentPage > 0 ? currentPage - 1 : 0}|}" th:text="'이전'"></a>
+        </li>
+
+        <!-- 페이지 번호 -->
+        <li class="page-members" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+            th:classappend="${i == currentPage} ? 'active' : ''">
+          <a class="page-link" th:href="@{|/members?page=${i}|}" th:text="${i + 1}"></a>
+        </li>
+
+        <!-- 다음 페이지 -->
+        <li class="page-members" th:classappend="${currentPage == totalPages - 1 or totalPages == 0} ? 'disabled' : ''">
+          <a class="page-link" th:href="@{|/members?page=${currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1}|}" th:text="'다음'"></a>
+        </li>
+
+
+      </ul>
+    </div>
+
+  </div>
+  <div th:replace="fragments/footer :: footer"></div>
+</div> <!-- /container -->
+</body>
+</html>
